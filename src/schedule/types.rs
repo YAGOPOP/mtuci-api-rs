@@ -1,15 +1,8 @@
-use std::{collections::BTreeMap, sync::LazyLock};
-// use serde::Deserialize;
+use std::collections::BTreeMap;
 
 use chrono::{DateTime, FixedOffset, NaiveDate, NaiveTime, Utc};
 use serde::{Deserialize, Deserializer, de};
 use serde_with::{DeserializeAs, DisplayFromStr, serde_as};
-
-use url::Url;
-
-const API_ENDPOINT: LazyLock<Url> = LazyLock::new(|| {
-    Url::parse("https://mtuci.ru/bitrix/services/main/ajax.php").expect("Invalid API endpoint")
-});
 
 #[derive(Debug, Deserialize)]
 pub struct ScheduleResponse {
