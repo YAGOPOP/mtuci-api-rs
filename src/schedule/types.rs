@@ -15,10 +15,10 @@ const API_ENDPOINT: LazyLock<Url> = LazyLock::new(|| {
 pub struct ScheduleResponse {
     status: ResponseStatus,
     data: Option<ScheduleData>,
-    errors: Vec<ErrorData>
+    errors: Vec<ErrorData>,
 }
 
-    #[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize)]
 pub enum ResponseStatus {
     #[serde(rename = "success")]
     Success,
@@ -102,12 +102,12 @@ struct WeekDay {
 
 #[derive(Debug, Deserialize)]
 pub struct ErrorData {
-message: String,
+    message: String,
 
-/// seems like always 0????
-code: i32,
-// #[serde(rename = "customData")]
-// custom_data: always null???
+    /// seems like always 0????
+    code: i32,
+    // #[serde(rename = "customData")]
+    // custom_data: always null???
 }
 
 struct NaiveDateFromStr;
