@@ -35,7 +35,7 @@ pub struct ScheduleData {
 
     week: Vec<WeekDay>,
 
-    #[serde_as(as = "Vec<DisplayFromStr>")]
+    #[serde_as(deserialize_as = "Vec<NaiveDateFromStr>")]
     week_dates: Vec<NaiveDate>,
 
     #[serde(with = "chrono::serde::ts_seconds")]
@@ -45,14 +45,15 @@ pub struct ScheduleData {
 #[serde_as]
 #[derive(Debug, Deserialize)]
 pub struct ScheduleClass {
+    #[serde_as(deserialize_as = "DisplayFromStr")]
     #[serde(rename = "ID")]
-    id: String,
+    id: u32,
 
-    #[serde_as(as = "DisplayFromStr")]
+    #[serde_as(deserialize_as = "DisplayFromStr")]
     #[serde(rename = "UF_DAY")]
     week_day: u8,
 
-    #[serde_as(as = "DisplayFromStr")]
+    #[serde_as(deserialize_as = "DisplayFromStr")]
     #[serde(rename = "UF_NUMBER")]
     class_number: u8,
 
