@@ -1,6 +1,6 @@
 mod types;
 
-pub use {types::ErrorData, types::ResponseStatus, types::ScheduleClass, types::ScheduleData, types::ScheduleResponse};
+pub use {types::ScheduleClass, types::ScheduleData};
 
 #[cfg(test)]
 mod tests;

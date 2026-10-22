@@ -4,22 +4,6 @@ use chrono::{DateTime, FixedOffset, NaiveDate, NaiveTime, Utc};
 use serde::{Deserialize, Deserializer, de};
 use serde_with::{DeserializeAs, DisplayFromStr, serde_as};
 
-#[derive(Debug, Deserialize)]
-pub struct ScheduleResponse {
-    status: ResponseStatus,
-    data: Option<ScheduleData>,
-    errors: Vec<ErrorData>,
-}
-
-#[derive(Debug, Deserialize)]
-pub enum ResponseStatus {
-    #[serde(rename = "success")]
-    Success,
-
-    #[serde(rename = "error")]
-    Error,
-}
-
 #[serde_as]
 #[derive(Debug, Deserialize)]
 pub struct ScheduleData {
@@ -91,16 +75,6 @@ struct WeekDay {
     date: NaiveDate,
 
     weekday: u8,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct ErrorData {
-    message: String,
-
-    /// seems like always 0????
-    code: i32,
-    // #[serde(rename = "customData")]
-    // custom_data: always null???
 }
 
 struct NaiveDateFromStr;
