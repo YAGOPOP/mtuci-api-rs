@@ -1,5 +1,5 @@
 use serde::Deserialize;
-use crate::types::SearchItemKind;
+use crate::types::{SearchItemKind, SearchValue};
 
 #[derive(Debug, Deserialize)]
 pub struct SearchItem {
@@ -9,5 +9,5 @@ pub struct SearchItem {
     #[serde(rename = "type")]
     pub kind: SearchItemKind,
 
-    pub value: String,
+    pub value: SearchValue,
 }
