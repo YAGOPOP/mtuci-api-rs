@@ -1,4 +1,5 @@
 use serde::Deserialize;
+use crate::types::SearchItemKind;
 
 #[derive(Debug, Deserialize)]
 pub struct SearchItem {
@@ -9,12 +10,4 @@ pub struct SearchItem {
     pub kind: SearchItemKind,
 
     pub value: String,
-}
-
-#[derive(Debug, serde::Deserialize)]
-#[serde(rename_all = "lowercase")]
-pub enum SearchItemKind {
-    Teacher,
-    Group,
-    Audience,
 }

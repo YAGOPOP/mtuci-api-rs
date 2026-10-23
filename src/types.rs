@@ -1,4 +1,4 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "lowercase")]
@@ -21,4 +21,12 @@ pub struct ApiResponse<T> {
     pub status: ApiStatus,
     pub data: Option<T>,
     pub errors: Vec<ApiError>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub enum SearchItemKind {
+    Teacher,
+    Group,
+    Audience,
 }
