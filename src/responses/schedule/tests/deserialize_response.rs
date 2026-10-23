@@ -1,4 +1,4 @@
-use crate::schedule::types::ScheduleData;
+use crate::responses::schedule::types::ScheduleData;
 use crate::types::ApiResponse;
 
 #[test]

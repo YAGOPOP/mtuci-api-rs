@@ -1,4 +1,4 @@
-use crate::search::types::SearchItem;
+use crate::responses::search::types::SearchItem;
 use crate::types::ApiResponse;
 
 #[test]
