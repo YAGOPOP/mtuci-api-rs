@@ -1,2 +1,2 @@
-mod types;
 mod responses;
+mod types;
