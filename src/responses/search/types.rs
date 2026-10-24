@@ -1,13 +1,27 @@
-use serde::Deserialize;
 use crate::types::{SearchItemKind, SearchValue};
+use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 pub struct SearchItem {
     #[serde(rename = "UF_NAME")]
-    pub name: String,
+    name: String,
 
     #[serde(rename = "type")]
-    pub kind: SearchItemKind,
+    kind: SearchItemKind,
 
-    pub value: SearchValue,
+    value: SearchValue,
+}
+
+impl SearchItem {
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn kind(&self) -> SearchItemKind {
+        self.kind
+    }
+
+    pub fn value(&self) -> &SearchValue {
+        &self.value
+    }
 }

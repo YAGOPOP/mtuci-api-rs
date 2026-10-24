@@ -17,7 +17,7 @@ pub struct ApiError {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct ApiResponse<T> {
+pub(crate) struct ApiResponse<T> {
     pub status: ApiStatus,
     pub data: Option<T>,
     pub errors: Vec<ApiError>,

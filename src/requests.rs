@@ -1,8 +1,7 @@
 use chrono::{Datelike, Local, Month};
-use serde::{Serialize, de::DeserializeOwned};
+use serde::Serialize;
 
 use crate::{
-    errors::Error,
     responses::SearchItem,
     types::{SearchItemKind, SearchValue},
 };
@@ -50,11 +49,11 @@ pub struct ScheduleRequest<'a> {
     month: u8,
 
     #[serde(rename = "TYPE")]
-    kind: &'a SearchItemKind,
+    kind: SearchItemKind,
 }
 
 impl<'a> ScheduleRequest<'a> {
-    pub fn new(search_value: &'a SearchValue, month: Month, kind: &'a SearchItemKind) -> Self {
+    pub fn new(search_value: &'a SearchValue, month: Month, kind: SearchItemKind) -> Self {
         Self {
             value: search_value,
             month: (month.number_from_month() - 1) as u8,
@@ -62,7 +61,7 @@ impl<'a> ScheduleRequest<'a> {
         }
     }
 
-    pub fn new_with_current_month(search_value: &'a SearchValue, kind: &'a SearchItemKind) -> Self {
+    pub fn new_with_current_month(search_value: &'a SearchValue, kind: SearchItemKind) -> Self {
         Self {
             value: search_value,
             month: Local::now().month0() as u8,
@@ -71,10 +70,10 @@ impl<'a> ScheduleRequest<'a> {
     }
 
     pub fn for_item(item: &'a SearchItem, month: Month) -> Self {
-        Self::new(&item.value, month, &item.kind)
+        Self::new(item.value(), month, item.kind())
     }
 
     pub fn for_item_current_month(item: &'a SearchItem) -> Self {
-        Self::new_with_current_month(&item.value, &item.kind)
+        Self::new_with_current_month(item.value(), item.kind())
     }
 }

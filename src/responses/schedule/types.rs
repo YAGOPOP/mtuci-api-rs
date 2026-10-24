@@ -19,6 +19,24 @@ pub struct ScheduleData {
     updated_at: DateTime<Utc>,
 }
 
+impl ScheduleData {
+    pub fn days(&self) -> &BTreeMap<NaiveDate, Vec<ScheduleClass>> {
+        &self.days
+    }
+
+    pub fn week(&self) -> &[WeekDay] {
+        &self.week
+    }
+
+    pub fn week_dates(&self) -> &[NaiveDate] {
+        &self.week_dates
+    }
+
+    pub fn updated_at(&self) -> DateTime<Utc> {
+        self.updated_at
+    }
+}
+
 #[serde_as]
 #[derive(Debug, Deserialize)]
 pub struct ScheduleClass {
@@ -68,13 +86,81 @@ pub struct ScheduleClass {
     is_form_control: bool,
 }
 
+impl ScheduleClass {
+    pub fn id(&self) -> u32 {
+        self.id
+    }
+
+    pub fn week_day(&self) -> u8 {
+        self.week_day
+    }
+
+    pub fn class_number(&self) -> u8 {
+        self.class_number
+    }
+
+    pub fn discipline(&self) -> &str {
+        &self.discipline
+    }
+
+    pub fn time_start(&self) -> NaiveTime {
+        self.time_start
+    }
+
+    pub fn time_end(&self) -> NaiveTime {
+        self.time_end
+    }
+
+    pub fn teacher(&self) -> &[String] {
+        &self.teacher
+    }
+
+    pub fn audience(&self) -> &[String] {
+        &self.audience
+    }
+
+    pub fn class_type(&self) -> &str {
+        &self.class_type
+    }
+
+    pub fn is_retake(&self) -> bool {
+        self.is_retake
+    }
+
+    pub fn group(&self) -> &[String] {
+        &self.group
+    }
+
+    pub fn is_online(&self) -> bool {
+        self.is_online
+    }
+
+    pub fn date(&self) -> DateTime<FixedOffset> {
+        self.date
+    }
+
+    pub fn is_form_control(&self) -> bool {
+        self.is_form_control
+    }
+}
+
 #[serde_as]
 #[derive(Debug, Deserialize)]
-struct WeekDay {
+pub struct WeekDay {
     #[serde_as(deserialize_as = "NaiveDateFromStr")]
     date: NaiveDate,
 
     weekday: u8,
+}
+
+impl WeekDay {
+    pub fn date(&self) -> NaiveDate {
+        self.date
+    }
+
+    pub fn week_day(&self) -> u8 {
+        self.weekday
+    }
 }
 
 struct NaiveDateFromStr;
