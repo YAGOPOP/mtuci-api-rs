@@ -4,4 +4,4 @@ mod search;
 
 pub use search::SearchItem;
 
-pub use schedule::{ScheduleData, ScheduleClass};
+pub use schedule::{ScheduleClass, ScheduleData, WeekDay};

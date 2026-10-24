@@ -10,10 +10,11 @@ pub use requests::{ScheduleRequest, SearchRequest};
 
 pub use errors::Error;
 
-pub use types::{SearchItemKind, SearchValue};
+pub use types::{SearchItemKind, SearchValue, ApiError};
 
 pub use responses::{
     ScheduleClass,
     ScheduleData,
     SearchItem,
+    WeekDay
 };

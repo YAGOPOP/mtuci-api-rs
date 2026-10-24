@@ -158,7 +158,7 @@ impl WeekDay {
         self.date
     }
 
-    pub fn week_day(&self) -> u8 {
+    pub fn weekday(&self) -> u8 {
         self.weekday
     }
 }

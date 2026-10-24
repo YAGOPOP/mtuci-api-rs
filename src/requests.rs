@@ -1,4 +1,4 @@
-use chrono::{Datelike, Local, Month};
+use chrono::{Datelike, FixedOffset, Month, Utc};
 use serde::Serialize;
 
 use crate::{
@@ -62,9 +62,11 @@ impl<'a> ScheduleRequest<'a> {
     }
 
     pub fn new_with_current_month(search_value: &'a SearchValue, kind: SearchItemKind) -> Self {
+        let moscow_time_offset = FixedOffset::east_opt(3 * 3600).expect("valid Moscow time offset");
+        let currrent_month = Utc::now().with_timezone(&moscow_time_offset).month0();
         Self {
             value: search_value,
-            month: Local::now().month0() as u8,
+            month: currrent_month as u8,
             kind,
         }
     }
