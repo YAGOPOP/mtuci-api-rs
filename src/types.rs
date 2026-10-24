@@ -23,7 +23,7 @@ pub struct ApiResponse<T> {
     pub errors: Vec<ApiError>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum SearchItemKind {
     Teacher,

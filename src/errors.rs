@@ -10,10 +10,4 @@ pub enum Error {
 
     #[error("API returned success without data")]
     MissingData,
-
-    #[error("invalid month: {0}, expected 1..=12")]
-    InvalidMonth(u8),
-
-    // #[error("search query cannot be empty")]
-    // EmptySearchQuery,
 }

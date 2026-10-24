@@ -1,99 +1,35 @@
 use chrono::{Datelike, Local, Month};
 use serde::{Serialize, de::DeserializeOwned};
-use serde_json::value;
 
 use crate::{
     errors::Error,
     responses::{ScheduleData, SearchItem},
-    types::{ApiResponse, ApiStatus, SearchItemKind, SearchValue},
+    types::{ApiResponse, ApiStatus},
 };
+
+use crate::requests::{Action, RequestQuery, ScheduleRequest, SearchRequest};
 
 const API_URL: &str = "https://mtuci.ru/bitrix/services/main/ajax.php";
 
-#[derive(Debug, Clone, Copy, Serialize)]
-#[serde(rename_all = "camelCase")]
-enum Action {
-    GetItemsListBySearch,
-    GetTimetableByValue,
-}
-
-#[derive(Debug, Serialize)]
-pub struct RequestQuery {
-    c: &'static str,
-    action: Action,
-    mode: &'static str,
-}
-
-impl RequestQuery {
-    pub fn new(action: Action) -> Self {
-        Self {
-            c: "mtuci:timetable",
-            action,
-            mode: "class",
-        }
-    }
-}
-
-#[derive(Debug, Serialize)]
-#[serde(rename_all = "UPPERCASE")]
-pub struct SearchRequest<'a> {
-    name: &'a str,
-}
-
-impl<'a> SearchRequest<'a> {
-    pub fn new(name: &'a str) -> Self {
-        Self { name }
-    }
-}
-
-#[derive(Debug, Serialize)]
-#[serde(rename_all = "UPPERCASE")]
-pub struct ScheduleRequest<'a> {
-    value: &'a SearchValue,
-    month: u8,
-
-    #[serde(rename = "TYPE")]
-    kind: &'a SearchItemKind,
-}
-
-impl<'a> ScheduleRequest<'a> {
-    pub fn new(search_value: &'a SearchValue, month: Month, kind: &'a SearchItemKind) -> Self {
-        Self {
-            value: search_value,
-            month: (month.number_from_month() - 1) as u8,
-            kind,
-        }
-    }
-
-    pub fn new_with_current_month(search_value: &'a SearchValue, kind: &'a SearchItemKind) -> Self {
-        Self {
-            value: search_value,
-            month: Local::now().month0() as u8,
-            kind,
-        }
-    }
-
-    pub fn for_item(item: &'a SearchItem, month: Month) -> Self {
-        Self::new(&item.value, month, &item.kind)
-    }
-
-    pub fn for_item_current_month(item: &'a SearchItem) -> Self {
-        Self::new_with_current_month(&item.value, &item.kind)
-    }
-}
-
-struct Client {
+#[derive(Clone, Debug)]
+pub struct Client {
     http: reqwest::Client,
 }
 
+impl Default for Client {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Client {
-    pub fn new() -> Client {
+    pub fn new() -> Self {
         Self {
             http: reqwest::Client::new(),
         }
     }
 
-    pub fn from_client(http: reqwest::Client) -> Client {
+    pub fn from_client(http: reqwest::Client) -> Self {
         Self { http }
     }
 
