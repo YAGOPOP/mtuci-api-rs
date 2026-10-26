@@ -2,13 +2,13 @@ use serde::{Serialize, de::DeserializeOwned};
 
 use crate::{
     errors::Error,
+    requests::{Action, RequestQuery, ScheduleRequest, SearchRequest},
     responses::{ScheduleData, SearchItem},
     types::{ApiResponse, ApiStatus},
 };
 
-use crate::requests::{Action, RequestQuery, ScheduleRequest, SearchRequest};
-
 const API_URL: &str = "https://mtuci.ru/bitrix/services/main/ajax.php";
+const USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "-rs/", env!("CARGO_PKG_VERSION"));
 
 #[derive(Clone, Debug)]
 pub struct Client {
@@ -40,6 +40,7 @@ impl Client {
         let response: ApiResponse<T> = self
             .http
             .post(API_URL)
+            .header(reqwest::header::USER_AGENT, USER_AGENT)
             .query(&RequestQuery::new(action))
             .form(&body)
             .send()
