@@ -10,6 +10,11 @@ use crate::{
 const API_URL: &str = "https://mtuci.ru/bitrix/services/main/ajax.php";
 const USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "-rs/", env!("CARGO_PKG_VERSION"));
 
+/// Клиент для работы с API МТУСИ.
+///
+/// Для HTTP-запросов использует [`reqwest::Client`].
+///
+/// Все публичные методы клиента асинхронные.
 #[derive(Clone, Debug)]
 pub struct Client {
     http: reqwest::Client,
@@ -22,12 +27,24 @@ impl Default for Client {
 }
 
 impl Client {
+    /// Создаёт клиент API с настройками HTTP по умолчанию.
+    ///
+    /// Для HTTP-запросов создаётся новый [`reqwest::Client`].
+    ///
+    /// # Panics
+    ///
+    /// Может паниковать, если не удаётся инициализировать HTTP-клиент.
     pub fn new() -> Self {
         Self {
             http: reqwest::Client::new(),
         }
     }
 
+    /// Создаёт клиент API на основе готового HTTP-клиента.
+    ///
+    /// # Аргументы
+    ///
+    /// * `http` — предварительно настроенный HTTP-клиент.
     pub fn from_client(http: reqwest::Client) -> Self {
         Self { http }
     }
@@ -55,6 +72,14 @@ impl Client {
         }
     }
 
+    /// Ищет группы, преподавателей и аудитории по заданной строке.
+    ///
+    /// Поиск выполняется через API МТУСИ. Возвращённые элементы содержат
+    /// название объекта, его тип и значение, необходимое для запроса расписания.
+    ///
+    /// # Аргументы
+    ///
+    /// * `search_request` — запрос с текстом для поиска.
     pub async fn search(
         &self,
         search_request: SearchRequest<'_>,
@@ -63,6 +88,11 @@ impl Client {
             .await
     }
 
+    /// Получает расписание для указанного объекта на месяц из запроса.
+    ///
+    /// # Аргументы
+    ///
+    /// * `schedule_request` — запрос с объектом, месяцем и типом объекта.
     pub async fn get_schedule(
         &self,
         schedule_request: ScheduleRequest<'_>,

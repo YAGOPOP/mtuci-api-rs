@@ -4,6 +4,10 @@ use chrono::{DateTime, FixedOffset, NaiveDate, NaiveTime, Utc};
 use serde::{Deserialize, Deserializer, de};
 use serde_with::{DeserializeAs, DisplayFromStr, serde_as};
 
+/// Расписание, возвращённое API за запрошенный месяц.
+///
+/// Содержит занятия, сгруппированные по датам, сведения о днях недели,
+/// последовательность дат текущей недели и время обновления, указанное API.
 #[serde_as]
 #[derive(Debug, Deserialize)]
 pub struct ScheduleData {
@@ -20,23 +24,39 @@ pub struct ScheduleData {
 }
 
 impl ScheduleData {
+    /// Возвращает занятия, сгруппированные по датам.
+    ///
+    /// Ключи — даты без времени (`NaiveDate`), значения — списки занятий
+    /// в соответствующий день. Используется `BTreeMap`, поэтому даты
+    /// расположены в порядке возрастания.
     pub fn days(&self) -> &BTreeMap<NaiveDate, Vec<ScheduleClass>> {
         &self.days
     }
 
+    /// Возвращает сведения о днях недели, предоставленные API.
     pub fn week(&self) -> &[WeekDay] {
         &self.week
     }
 
+    /// Возвращает последовательность дат недели, предоставленную API.
     pub fn week_dates(&self) -> &[NaiveDate] {
         &self.week_dates
     }
 
+    /// Возвращает время обновления расписания, указанное API.
+    ///
+    /// Время представлено в UTC. Оно не гарантирует, что API действительно
+    /// обновил расписание в этот момент: значение определяется ответом сервера.
     pub fn updated_at(&self) -> DateTime<Utc> {
         self.updated_at
     }
 }
 
+/// Одно занятие из расписания.
+///
+/// Содержит идентификаторы занятия и дня недели, номер пары, дисциплину,
+/// время проведения, преподавателей, аудитории, тип занятия и дополнительные
+/// признаки, предоставленные API.
 #[serde_as]
 #[derive(Debug, Deserialize)]
 pub struct ScheduleClass {
@@ -144,12 +164,18 @@ impl ScheduleClass {
     }
 }
 
+/// Сведения об одном дне недели, возвращённые API.
 #[serde_as]
 #[derive(Debug, Deserialize)]
 pub struct WeekDay {
+
+    /// Возвращает календарную дату.
     #[serde_as(deserialize_as = "NaiveDateFromStr")]
     date: NaiveDate,
 
+    /// Возвращает числовой идентификатор дня недели из API.
+    ///
+    /// Соответствие числовых значений дням недели определяется форматом ответа.
     weekday: u8,
 }
 

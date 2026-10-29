@@ -2,17 +2,23 @@ use serde::Deserialize;
 use serde_json::Value;
 use serde_with::{DisplayFromStr, serde_as};
 
+/// Данные об аудиториях, представленные в ответе API.
 #[derive(Debug, Deserialize)]
 pub struct RoomsInfo {
     rooms: Vec<Room>,
 }
 
 impl RoomsInfo {
+    /// Возвращает список аудиторий.
     pub fn rooms(&self) -> &[Room] {
         &self.rooms
     }
 }
 
+/// Описание аудитории, полученное из API.
+///
+/// Содержит идентификаторы, название, полное название, описание
+/// и дополнительную таблицу сведений.
 #[serde_as]
 #[derive(Debug, Deserialize)]
 pub struct Room {
@@ -54,6 +60,10 @@ impl Room {
     }
 }
 
+/// Дополнительные сведения об аудитории.
+///
+/// Содержит списки ссылок, времени работы, телефонов и адресов электронной
+/// почты, а также произвольные JSON-значения из поля `funcs`.
 #[derive(Debug, Deserialize)]
 pub struct RoomTable {
     links: Vec<String>,
