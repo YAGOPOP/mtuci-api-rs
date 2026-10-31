@@ -1,10 +1,7 @@
 use chrono::{Datelike, FixedOffset, Month, Utc};
 use serde::Serialize;
 
-use crate::{
-    responses::SearchItem,
-    types::{SearchItemKind, SearchValue},
-};
+use crate::{responses::SearchItem, types::SearchItemKind};
 
 #[derive(Debug, Clone, Copy, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -67,7 +64,7 @@ impl<'a> SearchRequest<'a> {
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub struct ScheduleRequest<'a> {
-    value: &'a SearchValue,
+    value: &'a str,
     month: u8,
 
     #[serde(rename = "TYPE")]
@@ -83,9 +80,12 @@ impl<'a> ScheduleRequest<'a> {
     /// * `search_value` — значение объекта, используемое API для поиска его расписания.
     /// * `month` — месяц, для которого требуется расписание.
     /// * `kind` — тип объекта: группа, преподаватель или аудитория.
-    pub fn new(search_value: &'a SearchValue, month: Month, kind: SearchItemKind) -> Self {
+    pub fn new<T>(search_value: &'a T, month: Month, kind: SearchItemKind) -> Self
+    where
+        T: AsRef<str> + ?Sized,
+    {
         Self {
-            value: search_value,
+            value: search_value.as_ref(),
             month: (month.number_from_month() - 1) as u8,
             kind,
         }
@@ -100,11 +100,11 @@ impl<'a> ScheduleRequest<'a> {
     ///
     /// * `search_value` — значение объекта, используемое API для поиска расписания.
     /// * `kind` — тип объекта.
-    pub fn new_with_current_month(search_value: &'a SearchValue, kind: SearchItemKind) -> Self {
+    pub fn new_with_current_month(search_value: &'a impl AsRef<str>, kind: SearchItemKind) -> Self {
         let moscow_time_offset = FixedOffset::east_opt(3 * 3600).expect("valid Moscow time offset");
         let currrent_month = Utc::now().with_timezone(&moscow_time_offset).month0();
         Self {
-            value: search_value,
+            value: search_value.as_ref(),
             month: currrent_month as u8,
             kind,
         }

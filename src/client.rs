@@ -51,7 +51,7 @@ impl Client {
 
     async fn post<B, T>(&self, action: Action, body: B) -> Result<T, Error>
     where
-        B: Serialize, // + ?Sized
+        B: Serialize,
         T: DeserializeOwned,
     {
         let response: ApiResponse<T> = self

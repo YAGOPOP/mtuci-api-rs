@@ -51,14 +51,6 @@ pub enum SearchItemKind {
 pub struct SearchValue(String);
 
 impl SearchValue {
-    /// Создаёт значение для запроса расписания.
-    ///
-    /// Принимает любой тип, преобразуемый в `String`. Проверка корректности
-    /// значения не выполняется.
-    pub fn new(value: impl Into<String>) -> Self {
-        Self(value.into())
-    }
-
     pub fn as_str(&self) -> &str {
         &self.0
     }
