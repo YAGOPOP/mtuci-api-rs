@@ -10,9 +10,9 @@ use serde_with::{DeserializeAs, DisplayFromStr, serde_as};
 /// последовательность дат текущей недели и время обновления, указанное API.
 #[serde_as]
 #[derive(Debug, Deserialize)]
-pub struct ScheduleData {
+pub struct RawSchedule {
     #[serde_as(deserialize_as = "BTreeMap<NaiveDateFromStr, _>")]
-    days: BTreeMap<NaiveDate, Vec<ScheduleClass>>,
+    days: BTreeMap<NaiveDate, Vec<RawScheduleClass>>,
 
     week: Vec<WeekDay>,
 
@@ -23,13 +23,13 @@ pub struct ScheduleData {
     updated_at: DateTime<Utc>,
 }
 
-impl ScheduleData {
+impl RawSchedule {
     /// Возвращает занятия, сгруппированные по датам.
     ///
     /// Ключи — даты без времени (`NaiveDate`), значения — списки занятий
     /// в соответствующий день. Используется `BTreeMap`, поэтому даты
     /// расположены в порядке возрастания.
-    pub fn days(&self) -> &BTreeMap<NaiveDate, Vec<ScheduleClass>> {
+    pub fn days(&self) -> &BTreeMap<NaiveDate, Vec<RawScheduleClass>> {
         &self.days
     }
 
@@ -59,7 +59,7 @@ impl ScheduleData {
 /// признаки, предоставленные API.
 #[serde_as]
 #[derive(Debug, Deserialize)]
-pub struct ScheduleClass {
+pub struct RawScheduleClass {
     #[serde_as(deserialize_as = "DisplayFromStr")]
     #[serde(rename = "ID")]
     id: u32,
@@ -106,7 +106,7 @@ pub struct ScheduleClass {
     is_form_control: bool,
 }
 
-impl ScheduleClass {
+impl RawScheduleClass {
     pub fn id(&self) -> u32 {
         self.id
     }

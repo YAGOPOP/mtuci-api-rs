@@ -3,7 +3,7 @@ use serde::{Serialize, de::DeserializeOwned};
 use crate::{
     errors::Error,
     requests::{Action, RequestQuery, ScheduleRequest, SearchRequest},
-    responses::{ScheduleData, SearchItem},
+    responses::{RawSchedule, SearchItem},
     types::{ApiResponse, ApiStatus},
 };
 
@@ -96,7 +96,7 @@ impl Client {
     pub async fn get_schedule(
         &self,
         schedule_request: ScheduleRequest<'_>,
-    ) -> Result<ScheduleData, Error> {
+    ) -> Result<RawSchedule, Error> {
         self.post(Action::GetTimetableByValue, schedule_request)
             .await
     }

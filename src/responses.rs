@@ -3,5 +3,5 @@ mod schedule;
 mod search;
 
 pub use info::{Room, RoomTable, RoomsInfo};
-pub use schedule::{ScheduleClass, ScheduleData, WeekDay};
+pub use schedule::{RawSchedule, RawScheduleClass, WeekDay};
 pub use search::SearchItem;

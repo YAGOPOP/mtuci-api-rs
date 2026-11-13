@@ -1,6 +1,6 @@
 mod types;
 
-pub use types::{ScheduleClass, ScheduleData, WeekDay};
+pub use types::{RawSchedule, RawScheduleClass, WeekDay};
 
 #[cfg(test)]
 mod tests;
